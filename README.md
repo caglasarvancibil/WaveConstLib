@@ -48,7 +48,7 @@ For more information check the example package.
 
 # Documentation and Download
 
-Check and download the documentation and release from [WaveConstLibJavaDoc and Release](https://github.com/caglasarvancibil/WaveConstLib/releases/tag/WaveConstLibv1.0)
+Check and download the documentation and release from [WaveConstLibJavaDoc and Release](https://github.com/caglasarvancibil/WaveConstLib/releases/)
 
 # How To Contribute
 
