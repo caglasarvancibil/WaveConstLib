@@ -12,14 +12,15 @@ import WaveletPackage.WaveletOperations;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.problem.AbstractProblem;
 
 public class DiscreteCrossover implements Variation {
 
     private final double probability;
-    private final WaveletConstructionProblem problem;
+    private final AbstractProblem problem;
     private WaveletConstruction waveletConstruction;
 
-    public DiscreteCrossover(double probability, WaveletConstructionProblem problem) {
+    public DiscreteCrossover(double probability, AbstractProblem problem) {
         this.probability = probability;
         this.problem = problem;
         waveletConstruction=new WaveletConstruction<>() {};
