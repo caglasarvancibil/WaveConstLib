@@ -34,6 +34,7 @@ There are five examples under the main branch to illustrate the usage of the lib
 5. [Signal Specific Wavelet Construction with MOEA Framework-Sine Wave](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/MOEAExample.java)
 6. [Signal Specific Wavelet Construction with MOEA Framework-ECG Signal](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/ECGMOEAExample.java)
 7. [Wavelet Construction Results of ECG Signals Analyzing Example](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/AnalyzeECGWaveletResults.java)
+>[!WARNING] The example 7 requires additional file to download can be found in release section.
 8. [First-Generation Wavelet Construction Limitations](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/LimitsOfConstructionTests.java)
 
 As an example of [First-Generation Wavelet Construction](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/FirstGenerationWaveletConstructionExample.java)
