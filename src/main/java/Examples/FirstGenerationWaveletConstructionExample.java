@@ -13,6 +13,8 @@ import MathOperators.DoubleOperators;
 import WaveletPackage.*;
 
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class FirstGenerationWaveletConstructionExample {
                 DoubleMatrixOperations.getInstance());
         Matrix<Double> signal=loadData.loadData(DataPaths.SignalsSamples+"normalTypeSineSamples.txt");
         Matrix<Double> otherType=loadData.loadData(DataPaths.SignalsSamples+"otherTypeSineSamples.txt");
-         SignalDataBase<Double> sigDB=new SignalDataBase<>();
+        SignalDataBase<Double> sigDB=new SignalDataBase<>();
         SignalDataBase<Double> otherSigDB=new SignalDataBase<>();
         sigDB.setFs(500.0);
         otherSigDB.setFs(1000.0);
@@ -72,9 +74,9 @@ public class FirstGenerationWaveletConstructionExample {
 
         IBasisFilterVariable ucRootVariable=new UCRootVariable();
         List<VariableBoundary> variableBoundaries2=new ArrayList<>();
-        variableBoundaries2.add(new VariableBoundary(90.0,270.0));
-        variableBoundaries2.add(new VariableBoundary(90.0,270.0));
-
+        for (int i = 0; i < 2; i++) {
+            variableBoundaries2.add(new VariableBoundary(90.0,270.0));
+        }
         IBasisFilterVariable discreteSampleVariable=new DiscreteSampleVariable();
         List<VariableBoundary> variableBoundaries3=new ArrayList<>();
         variableBoundaries3.add(new VariableBoundary(-1.0,1.0));
@@ -99,17 +101,21 @@ public class FirstGenerationWaveletConstructionExample {
         timeIntervalList.add(new TimeInterval(0.5,1.0));
 
         //******************** UCRootsVariable Filter Order=4 **********************//
+        int cntr=0;
+        String genStart= LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        System.out.println(genStart);
         for (int i = 0; i < 5; i++) {
             ConstructionObject constructionObject= waveletConstruction
                     .constructFeasibleWavelet(BasisVariableType.UCROOT, ucRootVariable,
-                            variableBoundaries2, 4,FilterType.MINPHASE,100);
-            wavelet= constructionObject.getWavelet();
+                            variableBoundaries2, 4,FilterType.SYMMETRIC,500);
+
+            wavelet=constructionObject.getWavelet();
 
             System.out.println(wavelet);
             System.out.println( waveletOperations.waveletFeasibility(wavelet).toSummary());
             System.out.println( waveletOperations.waveletFeasibility(wavelet).getFeasibility());
 
-            double [] mse=analyzeWavelet.reconstructionMSE(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"N",new FrequencyPair(2.0,64.0));
+            double [] mse=analyzeWavelet.reconstructionMSE(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"N",new FrequencyPair(2.0,64.0),new TimeInterval(0.5,1.0));
             double [] commonfreq=analyzeWavelet.commonFreqRanges(signalDataBaseList,wavelet,frequencyPairList,"N");
             double [] scaledepent=analyzeWavelet.scaleDependent(signalDataBaseList,wavelet,frequencyPairList2,timeIntervalList);
             double a=analyzeWavelet.scaleDependentCommonFrequency(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"O");
@@ -123,7 +129,7 @@ public class FirstGenerationWaveletConstructionExample {
             System.out.println(frequencyPairList2.get(0).toString()+" & "+timeIntervalList.get(0).toString()+"= "+scaledepent[0]);
             System.out.println(frequencyPairList2.get(1).toString()+" & "+timeIntervalList.get(1).toString()+"= "+scaledepent[1]);
 
-            // Wavelet Function Graphs
+            //Wavelet Function Graphs
             WaveletGraph<Double> waveletGraph=waveletOperations.waveletGraphs(wavelet,4);
             Plot plotGraphs=new Plot();
             plotGraphs.createSubPlot(1,4);
@@ -131,7 +137,7 @@ public class FirstGenerationWaveletConstructionExample {
             plotGraphs.setLabels("Time(s)","Amplitude","Scaling Function");
             plotGraphs.setTicUnits(2,0.1);
             plotGraphs.setPosition(0);
-            plotGraphs.setData(waveletGraph.getTime(),DoubleMatrixOperations.getInstance().multiplyScalar(1.0,waveletGraph.getPsi()));
+            plotGraphs.setData(waveletGraph.getTime(),DoubleMatrixOperations.getInstance().multiplyScalar(-1.0,waveletGraph.getPsi()));
             plotGraphs.setLabels("Time(s)","Amplitude","Wavelet Function");
             plotGraphs.setTicUnits(2,0.1);
             plotGraphs.setPosition(1);
@@ -147,6 +153,9 @@ public class FirstGenerationWaveletConstructionExample {
 
 
         }
+        System.out.println(cntr);
+        String genEnd=LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        System.out.println(genEnd);
         //********************PiecewisePolynomialVariable Filter Order=3 **********************//
 
         for (int i = 0; i < 5; i++) {
@@ -157,7 +166,7 @@ public class FirstGenerationWaveletConstructionExample {
 
             wavelet= constructionObject.getWavelet();
 
-            double [] mse=analyzeWavelet.reconstructionMSE(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"N",new FrequencyPair(2.0,64.0));
+            double [] mse=analyzeWavelet.reconstructionMSE(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"N",new FrequencyPair(2.0,64.0),new TimeInterval(0.5,1.0));
             double [] commonfreq=analyzeWavelet.commonFreqRanges(signalDataBaseList,wavelet,frequencyPairList,"N");
             double [] scaledepent=analyzeWavelet.scaleDependent(signalDataBaseList,wavelet,frequencyPairList2,timeIntervalList);
             double a=analyzeWavelet.scaleDependentCommonFrequency(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"O");
@@ -206,7 +215,7 @@ public class FirstGenerationWaveletConstructionExample {
 
             wavelet= constructionObject.getWavelet();
 
-            double [] mse=analyzeWavelet.reconstructionMSE(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"N",new FrequencyPair(2.0,64.0));
+            double [] mse=analyzeWavelet.reconstructionMSE(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"N",new FrequencyPair(2.0,64.0),new TimeInterval(0.5,1.0));
             double [] commonfreq=analyzeWavelet.commonFreqRanges(signalDataBaseList,wavelet,frequencyPairList,"N");
             double [] scaledepent=analyzeWavelet.scaleDependent(signalDataBaseList,wavelet,frequencyPairList2,timeIntervalList);
             double a=analyzeWavelet.scaleDependentCommonFrequency(signalDataBaseList,wavelet,new FrequencyPair(8.0,16.0),new TimeInterval(0.5,1.0),"O");

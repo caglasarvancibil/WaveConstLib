@@ -10,10 +10,7 @@ import SignalProcessing.DoubleSignalProcessingOperations;
 import WaveletPackage.*;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Consist of the example usage of the LoadData, WaveletOperations and  WaveletTransformations.
@@ -129,7 +126,7 @@ public class WaveletExample {
 
         //***********Sine Wave***************//
 
-       // WPT and IWPT to Sine Signal
+        // WPT and IWPT to Sine Signal
         Map<Integer, List<WPTNode<Double>>> nodeList = waveletTransformations.wpt(sineSample, wavelet,level,fsSine);
         Map<Integer, List<WPTNode<Double>>> tempNodeList=new HashMap<>();
 
@@ -179,7 +176,7 @@ public class WaveletExample {
         plotGraphs.plot();
 
         //***********Chirp Signal***************//
-       //Chirp Signal
+        //Chirp Signal
         Matrix<Double> tChirp= DoubleSignalProcessingOperations.getInstance().linspace(0.0,2.0,1/fsChirp);
 
         plotGraphs=new Plot();
@@ -190,48 +187,29 @@ public class WaveletExample {
 
         nodeList = waveletTransformations.wpt(chirpSample, wavelet,level,fsChirp);
         tempNodeList= new HashMap<>();
-        wpCoefList=new ArrayList<>();
-        wpCoefList.add(nodeList.get(level-1).get(0).copy());
-        wpCoefList.add(nodeList.get(level-1).get(1).copy());
-        tempNodeList.put(level-1,wpCoefList);
-        for (int i = 2; i < level ; i++) {
-            wpCoefList=new ArrayList<>();
-            wpCoefList.add(nodeList.get(level-i).get(1).copy());
-            tempNodeList.put(level-i,wpCoefList);
-
-        }
-
-
-       //0-250 Hz 0.0-0.6 s
+        tempNodeList.put(1,nodeList.get(1));
+        //0-250 Hz 0.0-0.6 s
         Matrix<Double> chirpTimeFrequencyBasedIWPT1=waveletTransformations.timeFrequencyBasediwpt(new FrequencyPair(0.0,250.0),new TimeInterval(0.0,0.6),fsChirp,chirpSample.getColumnLength(), wavelet, tempNodeList);
         plotGraphs=new Plot();
         plotGraphs.setData(tChirp,chirpTimeFrequencyBasedIWPT1);
         plotGraphs.setLabels("Time (s)","Amplitude","0-250 Hz,0-0.6 s WPT Reconstruction");
         plotGraphs.setTicUnits(0.2,0.5);
         plotGraphs.plot();
-
+        nodeList = waveletTransformations.wpt(chirpSample, wavelet,level,fsChirp);
         tempNodeList= new HashMap<>();
-        wpCoefList=new ArrayList<>();
-        wpCoefList.add(nodeList.get(level-1).get(0).copy());
-        wpCoefList.add(nodeList.get(level-1).get(1).copy());
-        tempNodeList.put(level-1,wpCoefList);
-        for (int i = 2; i < level ; i++) {
-            wpCoefList=new ArrayList<>();
-            wpCoefList.add(nodeList.get(level-i).get(1).copy());
-            tempNodeList.put(level-i,wpCoefList);
+        tempNodeList.put(1,nodeList.get(1));
 
-        }
-        //300-500 Hz 0.8-1.4 s
-        Matrix<Double> chirpTimeFrequencyBasedIWPT2=waveletTransformations.timeFrequencyBasediwpt(new FrequencyPair(300.0,500.0),new TimeInterval(0.8,1.4),fsChirp,chirpSample.getColumnLength(), wavelet, tempNodeList);
+        //250-500 Hz 0.8-1.5 s
+        Matrix<Double> chirpTimeFrequencyBasedIWPT2=waveletTransformations.timeFrequencyBasediwpt(new FrequencyPair(250.0,500.0),new TimeInterval(0.8,1.4),fsChirp,chirpSample.getColumnLength(), wavelet, tempNodeList);
         plotGraphs=new Plot();
         plotGraphs.setData(tChirp,chirpTimeFrequencyBasedIWPT2);
-        plotGraphs.setLabels("Time (s)","Amplitude","300-500 Hz,0.8-1.4 s WPT Reconstruction");
+        plotGraphs.setLabels("Time (s)","Amplitude","250-500 Hz,0.8-1.4 s WPT Reconstruction");
         plotGraphs.setTicUnits(0.2,0.5);
         plotGraphs.plot();
 
         // Wavelet Packet Spectrum of chirp  Signal
         Map<Integer, List<WPTNode<Double>>> chirpWPCoef = waveletTransformations.wpt(chirpSample, wavelet,level,fsChirp);
-        Map<Integer, List<WPTNode<Double>>> chirpNodeList=new HashMap<>();
+
 
         // Selection of Wavelet Packet Coefficients
         List<WPTNode<Double>> chirpSelectedWPCoef=new ArrayList<>();

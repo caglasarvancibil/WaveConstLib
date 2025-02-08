@@ -6,6 +6,7 @@ import FirstGenerationWaveletConstruction.FilterType;
 import WaveletPackage.Wavelet;
 import org.moeaframework.algorithm.SPEA2;
 import org.moeaframework.core.Variation;
+import org.moeaframework.problem.AbstractProblem;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,17 +15,16 @@ import java.util.List;
 
 public class Spea2Run {
     public  List<Wavelet<Double>>  Run(int numberOfVariables,
-                     int numberOfObjectives,
-                     double crossProbobality,
-                     int popSize,
-                     int numberOfGenerations,
-                     List<SignalDataBase<Double>> signalDataBaseList,
-                     int filterOrder,
-                     FilterType filterType,
-                     BasisVariableType basisVariableType){
+                                       int numberOfObjectives,
+                                       double crossProbobality,
+                                       int popSize,
+                                       int numberOfGenerations,
+                                       AbstractProblem problem,
+                                       List<SignalDataBase<Double>> signalDataBaseList,
+                                       int filterOrder,
+                                       FilterType filterType,
+                                       BasisVariableType basisVariableType){
 
-
-        WaveletConstructionProblem problem=new WaveletConstructionProblem(numberOfVariables,numberOfObjectives,signalDataBaseList,filterOrder, filterType,basisVariableType);
         RandomizedInitialPopulation initPOP = new RandomizedInitialPopulation(problem);
         Variation crossover=null;
         if (basisVariableType==BasisVariableType.POLYNOMIAL){
@@ -56,9 +56,9 @@ public class Spea2Run {
             }
 
         } else if (basisVariableType==BasisVariableType.UCROOT) {
-           for (int i = 0; i < spea2.getResult().size(); i++) {
-               RootsVariable var = (RootsVariable) spea2.getResult().get(i).getVariable(0);
-               waveletList.add(var.getWavelet());
+            for (int i = 0; i < spea2.getResult().size(); i++) {
+                RootsVariable var = (RootsVariable) spea2.getResult().get(i).getVariable(0);
+                waveletList.add(var.getWavelet());
             }
         }else if (basisVariableType==BasisVariableType.DISCRETE) {
             for (int i = 0; i < spea2.getResult().size(); i++) {

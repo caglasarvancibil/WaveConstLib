@@ -9,7 +9,8 @@ Wavelet construction library presents signal processing methodologies and numeri
 >* The applied signals can be loaded via “txt” files.
 
 >[!WARNING]
->Construction can be provided between the filter order/degree 2 and 20.
+>* MINPHASE type construction can be provided between the filter order/degree 2 and 20.
+>* SYMMETRIC type construction can be provided between the filter order/degree 2 and 15.
 
 >[!CAUTION]
 >Roots that satisfy all wavelet conditions may not always be found in the search spaces.
@@ -30,7 +31,10 @@ There are five examples under the main branch to illustrate the usage of the lib
 2. [Signal Processing](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/SignalProcessingExample.java)
 3. [Wavelet](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/WaveletExample.java)
 4. [First-Generation Wavelet Construction](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/FirstGenerationWaveletConstructionExample.java)
-5. [Signal Specific Wavelet Construction with MOEA Framework](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/MOEAExample.java)
+5. [Signal Specific Wavelet Construction with MOEA Framework-Sine Wave](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/MOEAExample.java)
+6. [Signal Specific Wavelet Construction with MOEA Framework-ECG Signal]()
+7. [Wavelet Construction Results of ECG Signals Analyzing Example]()
+8. [First-Generation Wavelet Construction Limitations]()
 
 As an example of [First-Generation Wavelet Construction](https://github.com/caglasarvancibil/WaveConstLib/blob/main/src/main/java/Examples/FirstGenerationWaveletConstructionExample.java)
 

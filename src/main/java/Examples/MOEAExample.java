@@ -13,6 +13,7 @@ import LinearAlgebra.Matrix;
 import MOEAClasses.NSGAIIRun;
 import MOEAClasses.SaveConstructedWaveletsAsTxt;
 import MOEAClasses.Spea2Run;
+import MOEAClasses.WaveletConstructionProblem;
 import MathOperators.DoubleOperators;
 import WaveletPackage.*;
 
@@ -66,7 +67,7 @@ public class MOEAExample {
         signalDataBaseList.add(sigDB);
         signalDataBaseList.add(otherSigDB);
 
-       // Assign Wavelet Construction Problem Parameters
+        // Assign Wavelet Construction Problem Parameters
         int filterOrder=5;
         FilterType type=FilterType.SYMMETRIC;
         BasisVariableType basisVariableType=BasisVariableType.UCROOT;
@@ -78,23 +79,26 @@ public class MOEAExample {
         int numberOfGenerations=6;
         double crossProbobality=0.8;
 
+        WaveletConstructionProblem problem=new WaveletConstructionProblem(numberOfVariables,numberOfObjectives,signalDataBaseList,filterOrder, type,basisVariableType);
 
         Spea2Run spea2Run=new Spea2Run();
         List<Wavelet<Double>> waveletList=spea2Run.Run(numberOfVariables,
-                                                        numberOfObjectives,
-                                                        crossProbobality,
-                                                        popSize,
-                                                        numberOfGenerations,
-                                                        signalDataBaseList,
-                                                        filterOrder,
-                                                        type,
-                                                        basisVariableType);
+                numberOfObjectives,
+                crossProbobality,
+                popSize,
+                numberOfGenerations,
+                problem,
+                signalDataBaseList,
+                filterOrder,
+                type,
+                basisVariableType);
 //        NSGAIIRun nsgaiiRun=new NSGAIIRun();
 //        List<Wavelet<Double>> waveletList=nsgaiiRun.Run(numberOfVariables,
 //                                                        numberOfObjectives,
 //                                                        crossProbobality,
 //                                                        popSize,
 //                                                        numberOfGenerations,
+//                                                        problem,
 //                                                        signalDataBaseList,
 //                                                        filterOrder,
 //                                                        type,
@@ -110,7 +114,7 @@ public class MOEAExample {
             System.out.println(wavelet);
 
             //Save the Wavelet Function filters as a txt file uncomment the line 112
-           // save.saveFilterCoefficients(wavelet);
+            // save.saveFilterCoefficients(wavelet);
 
             // Wavelet Function Graphs
             WaveletOperations<Double> waveletOperations= new WaveletOperations<>() {};
@@ -180,7 +184,7 @@ public class MOEAExample {
                     wptNodeList.add(fullWptNodes.get(level-k).get(1).copy());
                 }
 
-               // Calculate WP Spectrum and Plot
+                // Calculate WP Spectrum and Plot
                 wptSpectrum=waveletTransformations.wpspectrum(wptNodeList,tempSignals.getColumnLength(),fs,(int)Math.pow(2,level-1));
                 Plot plotGraphs=new Plot();
                 plotGraphs.setData(wptSpectrum.getTime(),wptSpectrum.getFrequency(),wptSpectrum.getSpectrum());

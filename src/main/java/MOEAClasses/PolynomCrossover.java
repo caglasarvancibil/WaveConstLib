@@ -10,16 +10,17 @@ import WaveletPackage.WaveletOperations;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.problem.AbstractProblem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PolynomCrossover implements Variation {
     private final double probability;
-    private final WaveletConstructionProblem problem;
+    private final AbstractProblem problem;
     private WaveletConstruction waveletConstruction;
 
-    public PolynomCrossover(double probability, WaveletConstructionProblem problem) {
+    public PolynomCrossover(double probability, AbstractProblem problem) {
         this.probability = probability;
         this.problem = problem;
         waveletConstruction=new WaveletConstruction<>() {};
@@ -58,17 +59,17 @@ public class PolynomCrossover implements Variation {
             results[1].setVariable(1, solutions[0].getVariable(1));
 
 
-        for (int k = 0; k < results.length; k++) {
-            Wavelet<Double> wavelet;
-            WaveletConditions<Double> waveletConditions;
-            List<PiecewisePolynomialVariable> polynomialVariables=new ArrayList<>();
-            boolean feasible=false;
+            for (int k = 0; k < results.length; k++) {
+                Wavelet<Double> wavelet;
+                WaveletConditions<Double> waveletConditions;
+                List<PiecewisePolynomialVariable> polynomialVariables=new ArrayList<>();
+                boolean feasible=false;
 
-            for (int j = 0; j < results[k] .getNumberOfVariables(); j++) {
-                polynomialVariables.add(j, (PiecewisePolynomialVariable) ((PolynomialVariable)results[k].getVariable(j)).getPiecewisePolynomialVariable().copy());
+                for (int j = 0; j < results[k] .getNumberOfVariables(); j++) {
+                    polynomialVariables.add(j, (PiecewisePolynomialVariable) ((PolynomialVariable)results[k].getVariable(j)).getPiecewisePolynomialVariable().copy());
                 }
 
-               wavelet=waveletConstruction.constructWavelet(polynomialVariables,filterOrder,type);
+                wavelet=waveletConstruction.constructWavelet(polynomialVariables,filterOrder,type);
 
                 if (wavelet.getLoR()!=null){
                     waveletConditions = waveletOperations.waveletFeasibility(wavelet);
@@ -79,8 +80,8 @@ public class PolynomCrossover implements Variation {
                     results[k]=problem.newSolution();
                 }
 
-        }
-        return results;
+            }
+            return results;
         }
 
         return solutions;

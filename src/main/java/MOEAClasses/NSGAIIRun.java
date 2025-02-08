@@ -9,6 +9,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.problem.AbstractProblem;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +23,7 @@ public class NSGAIIRun {
                                        double crossProbobality,
                                        int popSize,
                                        int numberOfGenerations,
+                                       AbstractProblem problem,
                                        List<SignalDataBase<Double>> signalDataBaseList,
                                        int filterOrder,
                                        FilterType filterType,
@@ -29,7 +31,6 @@ public class NSGAIIRun {
 
 
 
-        WaveletConstructionProblem problem=new WaveletConstructionProblem(numberOfVariables,numberOfObjectives,signalDataBaseList,filterOrder, filterType,basisVariableType);
         RandomizedInitialPopulation initPOP = new RandomizedInitialPopulation(problem);
         Variation crossover=null;
         if (basisVariableType==BasisVariableType.POLYNOMIAL){
